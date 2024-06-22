@@ -43,7 +43,7 @@ The tech stack will be as follows (subject to change as the project progresses):
 - scaffold sqlite
 - scaffold tailwindcss
 - scaffold tailwindui
-- scaffold install script. why all the scaffolding? To get the project up and running quickly and to reduce the variables that need to be checked to confirm the full setup is working. This will allow for a quicker start to the project and allow for more time to be spent on the actual development of the app.
+- scaffold install script. why all the scaffolding? To get the project up and running quickly and to reduce the variables that need to be checked to confirm the full setup is working. This will allow for a quicker start to the project and allow for more time to be spent on the actual development of the app. The danger though is that this part could be a time sink. The balance will be to get the project up and running quickly, even if its just for a single platform, and then to move on to the actual development of the app.
 - create db, tables and seed data
 - create basic app shell. Home page, choose staff button, main functions buttons
 - change user page
