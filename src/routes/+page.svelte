@@ -28,9 +28,25 @@
 	</h2>
 
 	<!-- Add a list of big buttons here to navigate to other pages. -->
+	<div class="button-container">
+		<button class="large-button"><a href="/delivery">Accept Delivery</a></button>
+		<button class="large-button"><a href="/sell">Sell Item</a></button>
+		<button class="large-button"><a href="/stock">Take Stock</a></button>
+	</div>
 </section>
 
 <style>
+	.button-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+	.large-button {
+		width: 90vw;
+		height: 80px;
+		margin: 10px;
+	}
 	section {
 		display: flex;
 		flex-direction: column;
