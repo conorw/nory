@@ -4,7 +4,7 @@
 
 	export let data;
 
-	let location = data.location.name;
+	let location = data.location?.name;
 </script>
 
 <svelte:head>

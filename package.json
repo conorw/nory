@@ -19,9 +19,10 @@
 		"@neoconfetti/svelte": "^1.0.0",
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/adapter-node": "^5.2.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "^8.56.7",
+		"@types/node": "^20.14.8",
 		"@types/sqlite3": "^3.1.11",
 		"eslint": "^9.0.0",
 		"eslint-config-prettier": "^9.1.0",
@@ -35,15 +36,16 @@
 		"svelte-check": "^3.6.0",
 		"tslib": "^2.4.1",
 		"tsx": "^4.15.7",
-		"typeorm": "^0.3.20",
 		"typescript": "^5.0.0",
 		"typescript-eslint": "^8.0.0-alpha.20",
-		"vite": "^5.0.3",
 		"vitest": "^1.2.0"
 	},
 	"type": "module",
 	"dependencies": {
-		"@types/node": "^20.14.8",
-		"sqlite3": "^5.1.7"
+		"@sveltejs/kit": "^2.0.0",
+		"sqlite": "^5.1.1",
+		"sqlite3": "^5.1.7",
+		"vite": "^5.0.3",
+		"typeorm": "^0.3.20"
 	}
 }

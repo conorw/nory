@@ -22,8 +22,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 			.getRawOne()
 	]);
 
-	console.log(location);
-
 	return {
 		users: locationUsers || [],
 		location

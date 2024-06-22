@@ -1,7 +1,9 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 import "reflect-metadata";
-import { DataSource } from 'typeorm';
+
+import type { DataSource } from 'typeorm';
+
 declare global {
 	namespace App {
 		// interface Error {}
