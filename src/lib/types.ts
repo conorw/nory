@@ -61,11 +61,37 @@ export class Modifier {
     @Column('text', { nullable: false})
     name!: string;
 
-    @Column('text', { nullable: false})
+    @Column('text', { nullable: true})
     option!: string;
 
-    @Column('real', { nullable: false})
-    price!: number;
+    @Column('real', { nullable: true})
+    price: number = 0.0;
 }
 
+@Entity()
+export class Menu {
+    @PrimaryGeneratedColumn('identity', { type: 'int' })
+    recipe_id!: number;
+
+    @Column('int', { nullable: false})
+    location_id!: number;
+
+    @Column('real', { nullable: true})
+    price!: number;
+
+    @Column('text', { nullable: true})
+    modifiers: string = '';
+}
+
+@Entity()
+export class Location {
+    @PrimaryGeneratedColumn('identity', { type: 'int' })
+    location_id!: number;
+
+    @Column('text', { nullable: false})
+    name!: string;
+
+    @Column('text', { nullable: false})
+    address!: string;
+}
 

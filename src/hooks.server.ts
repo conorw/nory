@@ -1,16 +1,16 @@
 import 'reflect-metadata';
 import type { Handle } from '@sveltejs/kit';
 import { DataSource } from 'typeorm';
-import { Staff, Ingredient, Recipe, Modifier } from '$lib/types';
+import { Staff, Ingredient, Recipe, Modifier, Location } from '$lib/types';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	if (!event.locals.db) {
 		const AppDataSource = new DataSource({
 			type: 'sqlite',
 			database: 'db.sqlite',
-			entities: [Staff, Ingredient, Recipe, Modifier],
+			entities: [Staff, Ingredient, Recipe, Modifier, Location],
 			synchronize: true,
-			logging: true
+			logging: false
 		});
 		const db = await AppDataSource.initialize();
 		// Set the db as our events.db variable.
