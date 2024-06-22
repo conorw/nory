@@ -27,8 +27,14 @@ RUN pnpm build
 # Delete source code files that were used to build the app that are no longer needed
 RUN rm -rf src/ static/ docker-compose.yml
 
+USER root
+#RUN chmod 777 /app/data
+RUN chown -R node:node /app/data
+
 # The USER instruction sets the user name to use as the default user for the remainder of the current stage
 USER node:node
+
+EXPOSE 3000
 
 # This is the command that will be run inside the image when you tell Docker to start the container
 CMD ["node","build/index.js"]

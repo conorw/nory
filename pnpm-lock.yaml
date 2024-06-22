@@ -11,9 +11,6 @@ importers:
       '@sveltejs/kit':
         specifier: ^2.0.0
         version: 2.5.17(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.18)(vite@5.3.1(@types/node@20.14.8)))(svelte@4.2.18)(vite@5.3.1(@types/node@20.14.8))
-      better-sqlite3:
-        specifier: ^11.0.0
-        version: 11.0.0
       sqlite:
         specifier: ^5.1.1
         version: 5.1.1
@@ -2786,6 +2783,7 @@ snapshots:
     dependencies:
       bindings: 1.5.0
       prebuild-install: 7.1.2
+    optional: true
 
   binary-extensions@2.3.0: {}
 

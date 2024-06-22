@@ -5,7 +5,7 @@ import { Staff, Ingredient, Recipe, Modifier, Location } from '$lib/types';
 
 const AppDataSource = new DataSource({
 	type: 'sqlite',
-	database: `db.sqlite`,
+	database: `data/db.sqlite`,
 	entities: [Staff, Ingredient, Recipe, Modifier, Location],
 	synchronize: true,
 	logging: false

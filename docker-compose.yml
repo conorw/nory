@@ -20,4 +20,4 @@ services:
       - .env
     restart: unless-stopped
     ports:
-      - 3000:5050
+      - 3000:3000
