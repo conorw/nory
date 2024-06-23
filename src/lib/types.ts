@@ -7,6 +7,48 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 // menus: recipe_id, location_id, price, modifiers
 // locations: location_id, name, address
 // staff: staff_id, name, role, location_id
+// delivery: order_id, location_id, staff_id, delivery_date
+// deliveryitems: order_id, ingredient_id, quantity
+// stock: ingredient_id, location_id, quantity
+
+@Entity()
+export class Stock {
+    @PrimaryGeneratedColumn('identity', { type: 'int' })
+    ingredient_id!: number;
+
+    @Column('int', { nullable: false})
+    location_id!: number;
+
+    @Column('real', { nullable: false})
+    quantity!: number;
+}
+
+@Entity()
+export class DeliveryItem {
+    @PrimaryGeneratedColumn('identity', { type: 'int' })
+    order_id!: number;
+
+    @Column('int', { nullable: false})
+    ingredient_id!: number;
+
+    @Column('real', { nullable: false})
+    quantity!: number;
+}
+
+@Entity()
+export class Delivery {
+    @PrimaryGeneratedColumn('identity', { type: 'int' })
+    order_id!: number;
+
+    @Column('int', { nullable: false})
+    location_id!: number;
+
+    @Column('int', { nullable: false})
+    staff_id!: number;
+
+    @Column('text', { nullable: false})
+    delivery_date!: string;
+}
 
 @Entity()
 export class Staff {
