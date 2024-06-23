@@ -148,7 +148,7 @@ describe('Sales', () => {
 	});
 	describe('when ingredient 2 is sold out', () => {
 		beforeAll(async () => {
-      await updateStock('1', 2, 1, db);
+			await updateStock('1', 2, 1, db);
 		});
 		it('there should NOT be stock for menu 2', async () => {
 			expect(
@@ -157,5 +157,15 @@ describe('Sales', () => {
 				})()
 			).rejects.toThrow();
 		});
+    describe('when ingredient 2 is restocked', () => {
+      beforeAll(async () => {
+        await updateStock('1', 2, 1, db, '+');
+      });
+      it('there should be stock for menu 2', async () => {
+        const checkStock = await checkRecipeIngredientStock('1', 2, 1, db);
+        console.log('checkStock', checkStock);
+        expect(checkStock.length).toBeTruthy();
+      });
+    });
 	});
 });

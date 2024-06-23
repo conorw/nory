@@ -23,9 +23,8 @@ export const sellItems = async (
 		for (const item of items) {
 			// find the ingredient for the recipe
 			const updateItems = await checkRecipeIngredientStock(location_id, item.recipe_id, item.sale_quantity, db);
-			console.log('updateItems', updateItems);
 			await Promise.all(updateItems.map(async (updateItem) => {
-				await updateStock(location_id, updateItem.ingredient_id, updateItem.totalQuantity, db);
+				return await updateStock(location_id, updateItem.ingredient_id, updateItem.totalQuantity, db);
 			}));
 		}
 
@@ -34,13 +33,13 @@ export const sellItems = async (
 	// TODO: Record the sale in the database and who made it
 	return success;
 };
-export const updateStock = async (location_id: string, ingredient_id: number, totalQuantity: number, db: DataSource) => {
+export const updateStock = async (location_id: string, ingredient_id: number, totalQuantity: number, db: DataSource, operator: '+' | '-' = '-') => {
 	const stockRepo = db.getRepository(Stock);
 	return stockRepo.createQueryBuilder('stock').update(Stock).where({
 		location_id: Number(location_id),
 		ingredient_id: ingredient_id
 	}).set({
-		quantity: () => `quantity - ${totalQuantity}`
+		quantity: () => `quantity ${operator} ${totalQuantity}`
 	}).execute();
 }
 export const checkRecipeIngredientStock = async (location_id: string, recipe_id: number, sale_quantity: number, db: DataSource) => {
