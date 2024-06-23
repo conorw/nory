@@ -22,19 +22,26 @@ import {
 
 @Entity()
 export class Stock {
+
+	@PrimaryColumn('int')
+    ingredient_id!: number;
+
+    @PrimaryColumn('int')
+    location_id!: number;
+
 	@ManyToOne(() => Ingredient, (ingredient) => ingredient.ingredient_id)
 	@JoinColumn({ name: 'ingredient_id' })
-	@PrimaryColumn('int')
-	ingredient!: Ingredient;
+	ingredient?: Ingredient;
 
 	@ManyToOne(() => Location, (location) => location.location_id)
 	@JoinColumn({ name: 'location_id' })
-	@PrimaryColumn('int')
-	location!: Location;
+	location?: Location;
+
 
 	@Column('real', { nullable: false })
 	quantity!: number;
 }
+
 
 @Entity()
 export class DeliveryItem {
@@ -142,11 +149,15 @@ export class Modifier {
 
 @Entity()
 export class Menu {
-	@PrimaryGeneratedColumn('identity', { type: 'int' })
+	@PrimaryColumn('int')
 	recipe_id!: number;
 
-	@Column('int', { nullable: false })
+	@PrimaryColumn('int')
 	location_id!: number;
+
+    @ManyToOne(() => Recipe, (recipe) => recipe.recipe_id)
+    @JoinColumn({ name: 'recipe_id' })
+    recipe?: Recipe;
 
 	@Column('real', { nullable: true })
 	price!: number;

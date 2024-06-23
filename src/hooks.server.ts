@@ -9,13 +9,14 @@ import {
 	Location,
 	Delivery,
 	DeliveryItem,
-	Stock
+	Stock,
+	Menu
 } from '$lib/types';
 
 const AppDataSource = new DataSource({
 	type: 'sqlite',
 	database: `data/db.sqlite`,
-	entities: [Staff, Ingredient, Recipe, Modifier, Location, Delivery, DeliveryItem, Stock],
+	entities: [Staff, Ingredient, Recipe, Modifier, Location, Delivery, DeliveryItem, Stock, Menu],
 	synchronize: true,
 	logging: false
 });

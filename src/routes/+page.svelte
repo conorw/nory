@@ -29,9 +29,9 @@
 
 	<!-- Add a list of big buttons here to navigate to other pages. -->
 	<div class="button-container">
-		<button class="large-button"><a href="/delivery">Receive Delivery</a></button>
-		<button class="large-button"><a href="/sell">Sell Item</a></button>
-		<button class="large-button"><a href="/stock">Take Stock</a></button>
+		<a href="/delivery"><button class="large-button">Record Delivery</button></a>
+		<a href="/sell"><button class="large-button">Sell Item</button></a>
+		<button class="large-button" disabled>Take Stock (Coming Soon)</button>
 	</div>
 </section>
 
@@ -42,7 +42,6 @@
 		justify-content: center;
 		align-items: center;
 	}
-
 
 	h1 {
 		width: 100%;

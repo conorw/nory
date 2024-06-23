@@ -1,6 +1,6 @@
 import { PUBLIC_LOCATION_ID } from '$env/static/public';
-import { createDelivery } from '$lib/server/service';
-import { Delivery, Ingredient } from '$lib/types';
+import { sellItems } from '$lib/server/service';
+import { Menu } from '$lib/types';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals }) {
@@ -10,9 +10,11 @@ export async function load({ locals }) {
 	// show all ingredients. even if its not on the menu at that location, the chef might be "experimenting"
 	// TODO: filter by location if required
 	const items = await db
-		.getRepository(Ingredient)
-		.createQueryBuilder('ingredient')
-		.select('ingredient.*')
+		.getRepository(Menu)
+		.createQueryBuilder('menu')
+		.select('menu.*, recipe.*')
+		.innerJoin('menu.recipe', 'recipe')
+		.where('location_id=:location_id', { location_id: PUBLIC_LOCATION_ID })
 		.orderBy('name')
 		.getRawMany();
 
@@ -25,21 +27,16 @@ export const actions = {
 		const data = await request.formData();
 		const db = locals.db;
 
-		const delivery: Delivery = {
-			location_id: Number(PUBLIC_LOCATION_ID),
-			staff_id: Number(data.get('staff_id')),
-			delivery_date: new Date(data.get('delivery_date')?.toString() || Date.now().toString())
-		};
-		const deliveryItems = JSON.parse(data.get('ingredients')?.toString() || '[]');
+		const sales = JSON.parse(data.get('sales')?.toString() || '[]');
 
-		console.log(deliveryItems);
+		console.log(sales);
 
 		try {
-			const newDelivery = await createDelivery(delivery, deliveryItems, db);
-			return { success: !!newDelivery, id: newDelivery };
+			const success = await sellItems(PUBLIC_LOCATION_ID, sales, db);
+			return { success };
 		} catch (e) {
 			console.error(e);
-			return { success: false, error: 'Unable to complete. Please try again' };
+			return { success: false, error: 'Unable to complete. Please try again:' + e};
 		}
 	}
 };
