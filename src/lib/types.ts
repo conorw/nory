@@ -96,7 +96,7 @@ export class Staff {
 
 @Entity()
 export class Ingredient {
-	@PrimaryGeneratedColumn('identity', { type: 'int' })
+	@PrimaryColumn({ type: 'int' })
 	ingredient_id!: number;
 
 	@Column('text', { nullable: false })
@@ -108,9 +108,6 @@ export class Ingredient {
 	@Column('real', { nullable: false })
 	cost!: number;
 
-    @ManyToOne(() => Recipe, (recipe) => recipe.ingredients)
-	@JoinColumn({ name: 'ingredient_id' })
-	recipies?: Recipe[];
 }
 
 @Entity()

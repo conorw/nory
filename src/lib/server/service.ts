@@ -19,40 +19,20 @@ export const sellItems = async (
 		// if the stock is not available, throw an error
 		// else, reduce the stock and return success
 		const stockRepo = manager.getRepository(Stock);
-		const recipeRepo = manager.getRepository(Recipe);
 
 		// loop through each menu item
 		for (const item of items) {
 			// find the ingredient for the recipe
-			const recipeIngredients = await recipeRepo.find({
-				where: { recipe_id: item.recipe_id }
-			});
-			if (!recipeIngredients.length) {
-				throw new Error('Recipe not found');
-			}
-			// for each ingredient, check if the stock is available
-			// if the stock is not available, throw an error
-			// else, reduce the stock and return success
-			await Promise.all(
-				recipeIngredients.map(async (ingredient) => {
-					const stock = await stockRepo.findOne({
-						where: { location_id: Number(location_id), ingredient_id: ingredient.ingredient_id }
-					});
-					// console.log('stock', stock);
-					const salesQuantity = item.sale_quantity * ingredient.quantity;
-					if (!stock) {
-						throw new Error('No stock for item: ' + ingredient.name);
-					} else if (stock && stock.quantity < salesQuantity) {
-						throw new Error('Not enough stock for item: ' + ingredient.name);
-					} else {
-						await stockRepo.save({
-							location_id: Number(location_id),
-							ingredient_id: ingredient.ingredient_id,
-							quantity: stock.quantity - salesQuantity
-						});
-					}
-				})
-			);
+			const updateItems = await checkRecipeIngredientStock(location_id, item.recipe_id, item.sale_quantity, db);
+			console.log('updateItems', updateItems);
+			await Promise.all(updateItems.map(async (updateItem) => {
+				await stockRepo.createQueryBuilder('stock').update(Stock).where({
+					location_id: Number(location_id),
+					ingredient_id: updateItem.ingredient_id
+				}).set({
+					quantity: () => `quantity - ${updateItem.totalQuantity}`
+				}).execute();
+			}));
 		}
 
 		success = true;
@@ -60,6 +40,42 @@ export const sellItems = async (
 	// TODO: Record the sale in the database and who made it
 	return success;
 };
+
+export const checkRecipeIngredientStock = async (location_id: string, recipe_id: number, sale_quantity: number, db: DataSource) => {
+	const recipeRepo = db.getRepository(Recipe);
+	const stockRepo = db.getRepository(Stock);
+	const recipeIngredients = await recipeRepo.find({
+		where: { recipe_id }
+	});
+	if (!recipeIngredients.length) {
+		throw new Error('Recipe not found');
+	}
+	// for each ingredient, check if the stock is available
+	// if the stock is not available, throw an error
+	// else, reduce the stock and return success
+	return Promise.all(
+		recipeIngredients.map(async (ingredient) => {
+			const stock = await stockRepo.findOne({
+				where: { location_id: Number(location_id), ingredient_id: ingredient.ingredient_id }
+			});
+			// console.log('stock', stock);
+			const salesQuantity = sale_quantity * ingredient.quantity;
+			if (!stock) {
+				throw new Error('No stock for item: ' + ingredient.name);
+			} else if (stock && stock.quantity < salesQuantity) {
+				throw new Error('Not enough stock for item: ' + ingredient.name);
+			} else {
+				return {
+					ingredient_id: ingredient.ingredient_id,
+					totalQuantity: salesQuantity
+				};
+			}
+		})
+	);
+
+}
+
+
 
 // TODO: add test for this function
 export const createDelivery = async (
