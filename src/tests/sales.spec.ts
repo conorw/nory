@@ -1,4 +1,4 @@
-import { checkRecipeIngredientStock } from '$lib/server/service';
+import { checkRecipeIngredientStock, updateStock } from '$lib/server/service';
 import {
 	Delivery,
 	DeliveryItem,
@@ -83,20 +83,20 @@ describe('Sales', () => {
 			menu_id: 2,
 			name: `Menu ${2}`,
 			price: 10, // Example variation for price
-			location_id: 1,
+			location_id,
 			recipe_id: 2
 		});
 
 		// Save stock
 		await stockRepo.save({
 			stock_id: 1,
-			location_id: 1,
+			location_id,
 			ingredient_id: 1,
 			quantity: 1
 		});
 		await stockRepo.save({
 			stock_id: 2,
-			location_id: 1,
+			location_id,
 			ingredient_id: 2,
 			quantity: 1
 		});
@@ -114,7 +114,7 @@ describe('Sales', () => {
 		recipeRepo = db.getRepository(Recipe);
 		locationRepo = db.getRepository(Location);
 
-		await setupTestData(1, 1);
+		await setupTestData(1);
 	});
 
 	it('there should be stock for menu 1', async () => {
@@ -148,7 +148,7 @@ describe('Sales', () => {
 	});
 	describe('when ingredient 2 is sold out', () => {
 		beforeAll(async () => {
-			await stockRepo.update({ ingredient_id: 2 }, { quantity: 0 });
+      await updateStock('1', 2, 1, db);
 		});
 		it('there should NOT be stock for menu 2', async () => {
 			expect(

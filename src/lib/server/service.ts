@@ -18,7 +18,6 @@ export const sellItems = async (
 
 		// if the stock is not available, throw an error
 		// else, reduce the stock and return success
-		const stockRepo = manager.getRepository(Stock);
 
 		// loop through each menu item
 		for (const item of items) {
@@ -26,12 +25,7 @@ export const sellItems = async (
 			const updateItems = await checkRecipeIngredientStock(location_id, item.recipe_id, item.sale_quantity, db);
 			console.log('updateItems', updateItems);
 			await Promise.all(updateItems.map(async (updateItem) => {
-				await stockRepo.createQueryBuilder('stock').update(Stock).where({
-					location_id: Number(location_id),
-					ingredient_id: updateItem.ingredient_id
-				}).set({
-					quantity: () => `quantity - ${updateItem.totalQuantity}`
-				}).execute();
+				await updateStock(location_id, updateItem.ingredient_id, updateItem.totalQuantity, db);
 			}));
 		}
 
@@ -40,7 +34,15 @@ export const sellItems = async (
 	// TODO: Record the sale in the database and who made it
 	return success;
 };
-
+export const updateStock = async (location_id: string, ingredient_id: number, totalQuantity: number, db: DataSource) => {
+	const stockRepo = db.getRepository(Stock);
+	return stockRepo.createQueryBuilder('stock').update(Stock).where({
+		location_id: Number(location_id),
+		ingredient_id: ingredient_id
+	}).set({
+		quantity: () => `quantity - ${totalQuantity}`
+	}).execute();
+}
 export const checkRecipeIngredientStock = async (location_id: string, recipe_id: number, sale_quantity: number, db: DataSource) => {
 	const recipeRepo = db.getRepository(Recipe);
 	const stockRepo = db.getRepository(Stock);
