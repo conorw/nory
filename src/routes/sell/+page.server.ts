@@ -1,4 +1,4 @@
-import { PUBLIC_LOCATION_ID } from '$env/static/public';
+import { PRIVATE_LOCATION_ID } from '$env/static/private';
 import { sellItems } from '$lib/server/service';
 import { Menu } from '$lib/types';
 
@@ -14,7 +14,7 @@ export async function load({ locals }) {
 		.createQueryBuilder('menu')
 		.select('menu.*, recipe.*')
 		.innerJoin('menu.recipe', 'recipe')
-		.where('location_id=:location_id', { location_id: PUBLIC_LOCATION_ID })
+		.where('location_id=:location_id', { location_id: PRIVATE_LOCATION_ID })
 		.orderBy('name')
 		.getRawMany();
 
@@ -32,7 +32,7 @@ export const actions = {
 		console.log(sales);
 
 		try {
-			const success = await sellItems(PUBLIC_LOCATION_ID, sales, db);
+			const success = await sellItems(PRIVATE_LOCATION_ID, sales, db);
 			return { success };
 		} catch (e) {
 			console.error(e);

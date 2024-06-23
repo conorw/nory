@@ -16,7 +16,8 @@ WORKDIR /app
 # Copy all local files into the image
 COPY . .
 
-ENV PUBLIC_LOCATION_ID=1
+# change this for different environments
+ENV PRIVATE_LOCATION_ID=2
 
 # Clean install all node modules
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile

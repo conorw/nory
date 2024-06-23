@@ -12,7 +12,8 @@
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
-		"seed": "cd seed && tsx seed.ts"
+		"seed": "cd seed && tsx seed.ts",
+		"docker:build": "docker build -t nory-app . && docker run nory-app"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^4.5.10",

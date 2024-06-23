@@ -1,4 +1,4 @@
-import { PUBLIC_LOCATION_ID } from '$env/static/public';
+import { PRIVATE_LOCATION_ID } from '$env/static/private';
 import { createDelivery } from '$lib/server/service';
 import { Delivery, Ingredient } from '$lib/types';
 
@@ -26,7 +26,7 @@ export const actions = {
 		const db = locals.db;
 
 		const delivery: Delivery = {
-			location_id: Number(PUBLIC_LOCATION_ID),
+			location_id: Number(PRIVATE_LOCATION_ID),
 			staff_id: Number(data.get('staff_id')),
 			delivery_date: new Date(data.get('delivery_date')?.toString() || Date.now().toString())
 		};

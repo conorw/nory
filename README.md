@@ -4,7 +4,7 @@ This is a simple inventory management system for a small business. It is a full-
 
 ## Running the app
 
-- The app will run for a specific location. The location is set in the .env file. Add a .env file in the root of the project with the following content: PUBLIC_LOCATION_ID=1
+- The app will run for a specific location. The location is set in the .env file. Add a .env file in the root of the project with the following content: PRIVATE_LOCATION_ID=1
 - run `pnpm install` to install the dependencies
 - run `pnpm dev` to start the app
 - open `http://localhost:5173` in your browser
@@ -26,7 +26,19 @@ The tests are written with vitest and mainly test the service layer business log
 
 For ease of deployment. The app can be run in a docker container. The docker image is built with the following command:
 
+- Open the docker file and change the PRIVATE_LOCATION_ID environment variable to the location you want to run the app for e.g. PRIVATE_LOCATION_ID=1
 - Make sure docker daemon is running
-- run `docker build -t inventory-management-system .` to build the docker image with the name inventory-management-system
-- run `docker run inventory-management-system` to run the docker container
+- run `pnpm docker:build` to build the docker image and run
 - open `http://localhost:3000` in your browser
+
+## Deploy in a local network
+N.B. I did not have time to test this out.
+To deploy the docker container in a local network:
+- Install docker on the machine that will host the app
+- Build the docker image as above
+- Run the docker container with the following command: `pnpm docker:build`
+- Make sure the port 3000 is open on the host machine
+- Find the IP address of the machine that is hosting the app. This can be done with the following command: `ipconfig` on Windows
+- Open a browser on another machine on the same network and navigate to `http://<ip-address-of-host-machine>:3000`
+
+

@@ -14,10 +14,6 @@ services:
     environment:
       # Internal server error messages will not send stacktrace to the browser in production
       - NODE_ENV=production
-      - PUBLIC_LOCATION_ID=1
-    # Points to a file with the sensitive environment variables
-    env_file:
-      - .env
     restart: unless-stopped
     ports:
       - 3000:3000

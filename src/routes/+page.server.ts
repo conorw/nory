@@ -1,6 +1,6 @@
 import { Staff, Location } from '$lib/types';
 import type { PageServerLoad } from './$types';
-import { PUBLIC_LOCATION_ID } from '$env/static/public';
+import { PRIVATE_LOCATION_ID } from '$env/static/private';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const db = locals.db;
@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 			.createQueryBuilder('staff')
 			.select('staff.*')
 			.where('location_id=:location_id', {
-				location_id: PUBLIC_LOCATION_ID
+				location_id: PRIVATE_LOCATION_ID
 			})
 			.orderBy('name')
 			.getRawMany(),
@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 			.getRepository(Location)
 			.createQueryBuilder('location')
 			.select('location.*')
-			.where('location_id=:location_id', { location_id: PUBLIC_LOCATION_ID })
+			.where('location_id=:location_id', { location_id: PRIVATE_LOCATION_ID })
 			.getRawOne()
 	]);
 
