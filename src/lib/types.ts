@@ -1,5 +1,14 @@
-import "reflect-metadata";
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import 'reflect-metadata';
+import {
+	Entity,
+	PrimaryGeneratedColumn,
+	Column,
+	PrimaryColumn,
+	JoinColumn,
+	ManyToOne,
+    Index,
+    OneToMany
+} from 'typeorm';
 
 // ingredients: ingredient_id, name, unit, cost
 // recipes: recipe_id, name, quantity, ingredient_id
@@ -13,127 +22,147 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()
 export class Stock {
-    @PrimaryGeneratedColumn('identity', { type: 'int' })
-    ingredient_id!: number;
+	@ManyToOne(() => Ingredient, (ingredient) => ingredient.ingredient_id)
+	@JoinColumn({ name: 'ingredient_id' })
+	@PrimaryColumn('int')
+	ingredient!: Ingredient;
 
-    @Column('int', { nullable: false})
-    location_id!: number;
+	@ManyToOne(() => Location, (location) => location.location_id)
+	@JoinColumn({ name: 'location_id' })
+	@PrimaryColumn('int')
+	location!: Location;
 
-    @Column('real', { nullable: false})
-    quantity!: number;
+	@Column('real', { nullable: false })
+	quantity!: number;
 }
 
 @Entity()
 export class DeliveryItem {
-    @PrimaryGeneratedColumn('identity', { type: 'int' })
-    order_id!: number;
 
-    @Column('int', { nullable: false})
-    ingredient_id!: number;
+    @PrimaryColumn('int')
+	order_id!: number;
 
-    @Column('real', { nullable: false})
-    quantity!: number;
+    @PrimaryColumn('int')
+	ingredient_id!: number;
+
+	@ManyToOne(() => Ingredient, (ingredient) => ingredient.ingredient_id)
+	@JoinColumn({ name: 'ingredient_id' })
+	ingredient!: Ingredient;
+
+	@Column('real', { nullable: false })
+	quantity!: number;
 }
 
 @Entity()
 export class Delivery {
-    @PrimaryGeneratedColumn('identity', { type: 'int' })
-    order_id!: number;
+	@PrimaryGeneratedColumn('increment', { type: 'int' })
+	order_id?: number;
 
-    @Column('int', { nullable: false})
-    location_id!: number;
+    @Column('int')
+	location_id!: number;
 
-    @Column('int', { nullable: false})
-    staff_id!: number;
+	@ManyToOne(() => Location, (location) => location.location_id)
+	@JoinColumn({ name: 'location_id' })
+	location?: Location;
 
-    @Column('text', { nullable: false})
-    delivery_date!: string;
+	@Column('int', { nullable: false })
+	staff_id!: number;
+
+	@Column('date', { nullable: false })
+	delivery_date!: Date;
 }
 
 @Entity()
 export class Staff {
-    @PrimaryGeneratedColumn('identity', { type: 'int' })
-    staff_id!: number;
+	@PrimaryGeneratedColumn('identity', { type: 'int' })
+	staff_id!: number;
 
-    @Column('text', { nullable: false})
-    name!: string;
+	@Column('text', { nullable: false })
+	name!: string;
 
-    @Column('text', { nullable: false})
-    role!: string;
+	@Column('text', { nullable: false })
+	role!: string;
 
-    @Column('int', { nullable: false})
-    location_id!: number;
+	@Column('int', { nullable: false })
+	location_id!: number;
 }
 
 @Entity()
 export class Ingredient {
-    @PrimaryGeneratedColumn('identity', { type: 'int' })
-    ingredient_id!: number;
+	@PrimaryGeneratedColumn('identity', { type: 'int' })
+	ingredient_id!: number;
 
-    @Column('text', { nullable: false})
-    name!: string;
+	@Column('text', { nullable: false })
+	name!: string;
 
-    @Column('text', { nullable: false})
-    unit!: string;
+	@Column('text', { nullable: false })
+	unit!: string;
 
-    @Column('real', { nullable: false})
-    cost!: number;
+	@Column('real', { nullable: false })
+	cost!: number;
+
+    @ManyToOne(() => Recipe, (recipe) => recipe.ingredients)
+	@JoinColumn({ name: 'ingredient_id' })
+	recipies?: Recipe[];
 }
 
 @Entity()
 export class Recipe {
-    @PrimaryGeneratedColumn('identity', { type: 'int' })
-    recipe_id!: number;
+	@PrimaryGeneratedColumn('identity', { type: 'int' })
+	recipe_id!: number;
 
-    @Column('text', { nullable: false})
-    name!: string;
+	@Column('text', { nullable: false })
+	name!: string;
 
-    @Column('real', { nullable: false})
-    quantity!: number;
+	@Column('real', { nullable: false })
+	quantity!: number;
 
-    @Column('int', { nullable: false})
-    ingredient_id!: number;
+	@Column('int', { nullable: false })
+	ingredient_id!: number;
+
+    @OneToMany(() => Ingredient, (ingredient) => ingredient.ingredient_id)
+    @JoinColumn({ name: 'ingredient_id' })
+    ingredients?: Ingredient[];
 }
 
 @Entity()
 export class Modifier {
-    @PrimaryGeneratedColumn('identity', { type: 'int' })
-    modifier_id!: number;
+	@PrimaryGeneratedColumn('identity', { type: 'int' })
+	modifier_id!: number;
 
-    @Column('text', { nullable: false})
-    name!: string;
+	@Column('text', { nullable: false })
+	name!: string;
 
-    @Column('text', { nullable: true})
-    option!: string;
+	@Column('text', { nullable: true })
+	option!: string;
 
-    @Column('real', { nullable: true})
-    price: number = 0.0;
+	@Column('real', { nullable: true })
+	price: number = 0.0;
 }
 
 @Entity()
 export class Menu {
-    @PrimaryGeneratedColumn('identity', { type: 'int' })
-    recipe_id!: number;
+	@PrimaryGeneratedColumn('identity', { type: 'int' })
+	recipe_id!: number;
 
-    @Column('int', { nullable: false})
-    location_id!: number;
+	@Column('int', { nullable: false })
+	location_id!: number;
 
-    @Column('real', { nullable: true})
-    price!: number;
+	@Column('real', { nullable: true })
+	price!: number;
 
-    @Column('text', { nullable: true})
-    modifiers: string = '';
+	@Column('text', { nullable: true })
+	modifiers: string = '';
 }
 
 @Entity()
 export class Location {
-    @PrimaryGeneratedColumn('identity', { type: 'int' })
-    location_id!: number;
+	@PrimaryGeneratedColumn('identity', { type: 'int' })
+	location_id!: number;
 
-    @Column('text', { nullable: false})
-    name!: string;
+	@Column('text', { nullable: false })
+	name!: string;
 
-    @Column('text', { nullable: false})
-    address!: string;
+	@Column('text', { nullable: false })
+	address!: string;
 }
-

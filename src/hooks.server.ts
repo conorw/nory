@@ -1,7 +1,16 @@
 import 'reflect-metadata';
 import type { Handle } from '@sveltejs/kit';
 import { DataSource } from 'typeorm';
-import { Staff, Ingredient, Recipe, Modifier, Location, Delivery, DeliveryItem, Stock } from '$lib/types';
+import {
+	Staff,
+	Ingredient,
+	Recipe,
+	Modifier,
+	Location,
+	Delivery,
+	DeliveryItem,
+	Stock
+} from '$lib/types';
 
 const AppDataSource = new DataSource({
 	type: 'sqlite',
